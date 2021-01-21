@@ -1,6 +1,6 @@
 
 locals {
-  resourceGroupNames = split(",", var.resourceGroupNames)
+  resourceGroupNames = var.resourceGroupNames
   adminGroupNames    = [
     for name in local.resourceGroupNames:
       "${replace(upper(name), "-", "_")}_ADMIN"

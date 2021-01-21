@@ -1,6 +1,6 @@
 variable "resourceGroupNames" {
-  type        = string
-  description = "Comma-separated list of resource group names that should be created"
+  type        = list(string)
+  description = "List of resource group names that should be created"
 }
 
 variable "region" {
