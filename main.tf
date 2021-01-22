@@ -13,6 +13,7 @@ locals {
 
 data "ibm_resource_group" "resource_group" {
   count = length(local.resourceGroupNames)
+
   name  = local.resourceGroupNames[count.index]
 }
 
@@ -20,11 +21,13 @@ data "ibm_resource_group" "resource_group" {
 
 resource "ibm_iam_access_group" "admins" {
   count = length(local.adminGroupNames)
+
   name  = local.adminGroupNames[count.index]
 }
 
 resource "ibm_iam_access_group" "users" {
   count = length(local.userGroupNames)
+
   name  = local.userGroupNames[count.index]
 }
 
@@ -44,6 +47,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_1" {
 
 resource "ibm_iam_access_group_policy" "admin_policy_2" {
   count           = length(local.adminGroupNames)
+
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Viewer"]
   resources {
@@ -54,6 +58,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_2" {
 
 resource "ibm_iam_access_group_policy" "admin_policy_3" {
   count           = length(local.adminGroupNames)
+
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Administrator", "Manager"]
   resources {
@@ -64,6 +69,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_3" {
 
 resource "ibm_iam_access_group_policy" "admin_policy_4" {
   count           = length(local.adminGroupNames)
+
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Administrator", "Manager"]
   resources {
