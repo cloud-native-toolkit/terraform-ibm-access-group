@@ -1,12 +1,14 @@
 
 locals {
-  resourceGroupNames = var.resourceGroups
+  resourceGroupNames = [
+    var.resourceGroups.*.name
+  ]
   adminGroupNames    = [
-    for name in var.resourceGroups:
+    for name in local.resourceGroupNames:
       "${replace(upper(name), "-", "_")}_ADMIN"
   ]
   userGroupNames     = [
-    for name in var.resourceGroups:
+    for name in local.resourceGroupNames:
       "${replace(upper(name), "-", "_")}_USER"
   ]
 }
