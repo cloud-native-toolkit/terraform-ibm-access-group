@@ -1,20 +1,20 @@
 
 locals {
-  resourceGroupNames = var.resourceGroupNames
+  resourceGroupNames = var.resourceGroups
   adminGroupNames    = [
-    for name in var.resourceGroupNames:
+    for name in var.resourceGroups:
       "${replace(upper(name), "-", "_")}_ADMIN"
   ]
   userGroupNames     = [
-    for name in var.resourceGroupNames:
+    for name in var.resourceGroups:
       "${replace(upper(name), "-", "_")}_USER"
   ]
 }
 
 data "ibm_resource_group" "resource_group" {
-  count = length(var.resourceGroupNames)
+  count = length(var.resourceGroups)
 
-  name  = var.resourceGroupNames[count.index]
+  name  = var.resourceGroups[count.index]
 }
 
 /*** Create Access Groups for Admins and Users ***/
