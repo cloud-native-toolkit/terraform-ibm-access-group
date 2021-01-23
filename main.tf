@@ -14,9 +14,9 @@ locals {
 }
 
 data "ibm_resource_group" "resource_group" {
-  count = length(var.resourceGroups)
+  count = length(local.resourceGroupNames)
 
-  name  = var.resourceGroups[count.index]
+  name  = local.resourceGroupNames[count.index]
 }
 
 /*** Create Access Groups for Admins and Users ***/
