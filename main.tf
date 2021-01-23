@@ -1,8 +1,6 @@
 
 locals {
-  resourceGroupNames = [
-    var.resourceGroups.*.name
-  ]
+  resourceGroupNames = split(",", var.resourceGroupNames)
   adminGroupNames    = [
     for name in local.resourceGroupNames:
       "${replace(upper(name), "-", "_")}_ADMIN"
@@ -13,7 +11,14 @@ locals {
   ]
 }
 
+resource "ibm_resource_group" "resource_group" {
+  count = var.createResourceGroups ? length(local.resourceGroupNames) : 0
+
+  name  = local.resourceGroupNames[count.index]
+}
+
 data "ibm_resource_group" "resource_group" {
+  depends_on = [ibm_resource_group.resource_group]
   count = length(local.resourceGroupNames)
 
   name  = local.resourceGroupNames[count.index]

@@ -2,5 +2,6 @@ module "access_groups" {
   source = "./module"
 
   region         = var.region
-  resourceGroups = module.resource_groups.names
+  resourceGroups = var.resource_group_name
+  createResourceGroups = true
 }
