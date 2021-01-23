@@ -1,14 +1,6 @@
 
 locals {
   resourceGroupNames = split(",", var.resourceGroupNames)
-  adminGroupNames    = [
-    for name in local.resourceGroupNames:
-      "${replace(upper(name), "-", "_")}_ADMIN"
-  ]
-  userGroupNames     = [
-    for name in local.resourceGroupNames:
-      "${replace(upper(name), "-", "_")}_USER"
-  ]
 }
 
 resource "ibm_resource_group" "resource_group" {
@@ -27,15 +19,15 @@ data "ibm_resource_group" "resource_group" {
 /*** Create Access Groups for Admins and Users ***/
 
 resource "ibm_iam_access_group" "admins" {
-  count = length(local.adminGroupNames)
+  count = length(local.resourceGroupNames)
 
-  name  = local.adminGroupNames[count.index]
+  name  = "${replace(upper(local.resourceGroupNames[count.index]), "-", "_")}_ADMIN"
 }
 
 resource "ibm_iam_access_group" "users" {
-  count = length(local.userGroupNames)
+  count = length(local.resourceGroupNames)
 
-  name  = local.userGroupNames[count.index]
+  name  = "${replace(upper(local.resourceGroupNames[count.index]), "-", "_")}_USER"
 }
 
 /*** Import resource groups for the Admins Access Groups ***/
@@ -43,7 +35,7 @@ resource "ibm_iam_access_group" "users" {
 /*** Admins Access Groups Policies ***/
 
 resource "ibm_iam_access_group_policy" "admin_policy_1" {
-  count = length(local.adminGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Editor", "Manager"]
@@ -53,7 +45,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_1" {
 }
 
 resource "ibm_iam_access_group_policy" "admin_policy_2" {
-  count           = length(local.adminGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Viewer"]
@@ -64,7 +56,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_2" {
 }
 
 resource "ibm_iam_access_group_policy" "admin_policy_3" {
-  count           = length(local.adminGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Administrator", "Manager"]
@@ -75,7 +67,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_3" {
 }
 
 resource "ibm_iam_access_group_policy" "admin_policy_4" {
-  count           = length(local.adminGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
   roles           = ["Administrator", "Manager"]
@@ -87,7 +79,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_4" {
 /*** Users Access Groups Policies ***/
 
 resource "ibm_iam_access_group_policy" "user_policy_1" {
-  count = length(local.userGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.users.*.id, count.index)
   roles           = ["Viewer", "Manager"]
@@ -97,7 +89,7 @@ resource "ibm_iam_access_group_policy" "user_policy_1" {
 }
 
 resource "ibm_iam_access_group_policy" "user_policy_2" {
-  count = length(local.userGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.users.*.id, count.index)
   roles           = ["Viewer"]
@@ -108,7 +100,7 @@ resource "ibm_iam_access_group_policy" "user_policy_2" {
 }
 
 resource "ibm_iam_access_group_policy" "user_policy_3" {
-  count = length(local.userGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.users.*.id, count.index)
   roles           = ["Editor", "Writer"]
@@ -119,7 +111,7 @@ resource "ibm_iam_access_group_policy" "user_policy_3" {
 }
 
 resource "ibm_iam_access_group_policy" "user_policy_4" {
-  count = length(local.userGroupNames)
+  count = length(local.resourceGroupNames)
 
   access_group_id = element(ibm_iam_access_group.users.*.id, count.index)
   roles           = ["Reader", "Writer"]
