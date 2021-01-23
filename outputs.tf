@@ -6,7 +6,7 @@ output "resourceGroupNames" {
 
 output "adminGroupNames" {
   description = "List of admin access group names"
-  value       = local.adminGroupNames
+  value       = ibm_iam_access_group.admins.*.name
   depends_on  = [
     ibm_iam_access_group_policy.admin_policy_1,
     ibm_iam_access_group_policy.admin_policy_2,
@@ -17,7 +17,7 @@ output "adminGroupNames" {
 
 output "userGroupNames" {
   description = "List of user access group names"
-  value       = local.userGroupNames
+  value       = ibm_iam_access_group.users.*.name
   depends_on  = [
     ibm_iam_access_group_policy.user_policy_1,
     ibm_iam_access_group_policy.user_policy_2,
