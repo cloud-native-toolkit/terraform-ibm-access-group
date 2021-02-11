@@ -9,6 +9,9 @@ RESOURCE_GROUP=$(cat ./terraform.tfvars | grep "new_resource_group" | sed -E "s/
 echo "Resource group: ${RESOURCE_GROUP}"
 
 ACCESS_GROUP_BASE=$(echo "${RESOURCE_GROUP}" | sed "s/-/_/g" | tr '[:lower:]' '[:upper:]')
+
+echo "Access group base: ${ACCESS_GROUP_BASE}"
+
 ADMIN_ACCESS_GROUP="${ACCESS_GROUP_BASE}-ADMIN"
 EDIT_ACCESS_GROUP="${ACCESS_GROUP_BASE}-EDIT"
 VIEW_ACCESS_GROUP="${ACCESS_GROUP_BASE}-VIEW"
