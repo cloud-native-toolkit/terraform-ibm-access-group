@@ -2,6 +2,9 @@
 
 set -e
 
+echo "Current working directory: ${PWD}"
+ls -l
+
 ibmcloud login --apikey "${IBMCLOUD_API_KEY}" -r us-east
 
 RESOURCE_GROUP=$(cat ./terrform.tfvars | grep "new_resource_group" | sed -E "s/.*=//g" | sed 's/"//g')
