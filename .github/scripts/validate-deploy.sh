@@ -4,9 +4,9 @@ set -e
 
 ibmcloud login --apikey "${IBMCLOUD_API_KEY}" -r us-east
 
-source ./terraform.tfvars
+RESOURCE_GROUP=$(cat ./terrform.tfvars | grep "new_resource_group" | sed -E "s/.*=//g" | sed 's/"//g')
 
-ACCESS_GROUP_BASE=$(echo "${new_resource_group}" | sed "s/-/_/g" | tr '[:lower:]' '[:upper:]')
+ACCESS_GROUP_BASE=$(echo "${RESOURCE_GROUP}" | sed "s/-/_/g" | tr '[:lower:]' '[:upper:]')
 ADMIN_ACCESS_GROUP="${ACCESS_GROUP_BASE}-ADMIN"
 EDIT_ACCESS_GROUP="${ACCESS_GROUP_BASE}-EDIT"
 VIEW_ACCESS_GROUP="${ACCESS_GROUP_BASE}-VIEW"
