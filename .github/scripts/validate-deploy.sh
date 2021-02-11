@@ -16,11 +16,11 @@ ADMIN_ACCESS_GROUP="${ACCESS_GROUP_BASE}-ADMIN"
 EDIT_ACCESS_GROUP="${ACCESS_GROUP_BASE}-EDIT"
 VIEW_ACCESS_GROUP="${ACCESS_GROUP_BASE}-VIEW"
 
-GROUPS="${ADMIN_ACCESS_GROUP} ${EDIT_ACCESS_GROUP} ${VIEW_ACCESS_GROUP}"
+ACCESS_GROUPS="${ADMIN_ACCESS_GROUP} ${EDIT_ACCESS_GROUP} ${VIEW_ACCESS_GROUP}"
 
-echo "Groups: ${GROUPS}"
+echo "Groups: ${ACCESS_GROUPS}"
 
-for group in $GROUPS; do
+for group in ${ACCESS_GROUPS}; do
   echo "Checking for group: ${group}"
 
   if ! ibmcloud iam access-group "${group}"; then
