@@ -16,12 +16,34 @@ output "adminGroupNames" {
 }
 
 output "userGroupNames" {
-  description = "List of user access group names"
-  value       = ibm_iam_access_group.users.*.name
+  description = "List of editor access group names (**Deprecated** use editGroupNames instead"
+  value       = ibm_iam_access_group.editors.*.name
   depends_on  = [
-    ibm_iam_access_group_policy.user_policy_1,
-    ibm_iam_access_group_policy.user_policy_2,
-    ibm_iam_access_group_policy.user_policy_3,
-    ibm_iam_access_group_policy.user_policy_4
+    ibm_iam_access_group_policy.edit_policy_1,
+    ibm_iam_access_group_policy.edit_policy_2,
+    ibm_iam_access_group_policy.edit_policy_3,
+    ibm_iam_access_group_policy.edit_policy_4
+  ]
+}
+
+output "editGroupNames" {
+  description = "List of editor access group names"
+  value       = ibm_iam_access_group.editors.*.name
+  depends_on  = [
+    ibm_iam_access_group_policy.edit_policy_1,
+    ibm_iam_access_group_policy.edit_policy_2,
+    ibm_iam_access_group_policy.edit_policy_3,
+    ibm_iam_access_group_policy.edit_policy_4
+  ]
+}
+
+output "viewGroupNames" {
+  description = "List of viewer access group names"
+  value       = ibm_iam_access_group.viewers.*.name
+  depends_on  = [
+    ibm_iam_access_group_policy.view_policy_1,
+    ibm_iam_access_group_policy.view_policy_2,
+    ibm_iam_access_group_policy.view_policy_3,
+    ibm_iam_access_group_policy.view_policy_4
   ]
 }
