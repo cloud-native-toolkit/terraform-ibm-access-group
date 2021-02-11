@@ -2,12 +2,9 @@
 
 set -e
 
-echo "Current working directory: ${PWD}"
-ls -l
-
 ibmcloud login --apikey "${IBMCLOUD_API_KEY}" -r us-east
 
-RESOURCE_GROUP=$(cat ./terrform.tfvars | grep "new_resource_group" | sed -E "s/.*=//g" | sed 's/"//g')
+RESOURCE_GROUP=$(cat ./terraform.tfvars | grep "new_resource_group" | sed -E "s/.*=//g" | sed 's/"//g')
 
 ACCESS_GROUP_BASE=$(echo "${RESOURCE_GROUP}" | sed "s/-/_/g" | tr '[:lower:]' '[:upper:]')
 ADMIN_ACCESS_GROUP="${ACCESS_GROUP_BASE}-ADMIN"
