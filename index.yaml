@@ -9,6 +9,21 @@ tags:
 versions:
   - platforms: []
     dependencies: []
+    variables: [{name: resourceGroupNames, type: list(string), description: List of resource group names that should be created}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, default: false, optional: true}]
+    version: v1.2.0
+    outputs:
+      - name: resourceGroupNames
+        description: List of resource group names
+      - name: adminGroupNames
+        description: List of admin access group names
+      - name: userGroupNames
+        description: List of editor access group names (**Deprecated** use editGroupNames instead
+      - name: editGroupNames
+        description: List of editor access group names
+      - name: viewGroupNames
+        description: List of viewer access group names
+  - platforms: []
+    dependencies: []
     variables: [{name: resourceGroupNames, type: list(string), description: List of resource group names that should be created}, {name: region, type: string, description: The region where the container registry should be set up}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, default: false, optional: true}]
     version: v1.1.2
     outputs:
