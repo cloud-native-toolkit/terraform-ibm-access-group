@@ -8,4 +8,8 @@ tags:
 versions:
 - platforms: []
   dependencies: []
-  variables: []
+  variables:
+    - name: createResourceGroups
+      scope: global
+    - name: resourceGroupNames
+      scope: global
