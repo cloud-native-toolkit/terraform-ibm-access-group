@@ -1,4 +1,4 @@
-id: github.com/ibm-garage-cloud/terraform-ibm-access-group
+id: github.com/cloud-native-toolkit/terraform-ibm-access-group
 name: ibm-access-group
 type: terraform
 description: Module to create ADMIN and USER access groups for a set of resource groups
@@ -7,6 +7,31 @@ tags:
   - ibm cloud
   - access groups
 versions:
+  - platforms: []
+    dependencies: []
+    variables:
+      - name: createResourceGroups
+        scope: global
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        default: false
+        optional: true
+      - name: resourceGroupNames
+        scope: global
+        type: list(string)
+        description: List of resource group names that should be created
+    version: v2.0.0
+    outputs:
+      - name: resourceGroupNames
+        description: List of resource group names
+      - name: adminGroupNames
+        description: List of admin access group names
+      - name: userGroupNames
+        description: List of editor access group names (**Deprecated** use editGroupNames instead
+      - name: editGroupNames
+        description: List of editor access group names
+      - name: viewGroupNames
+        description: List of viewer access group names
   - platforms: []
     dependencies: []
     variables:
