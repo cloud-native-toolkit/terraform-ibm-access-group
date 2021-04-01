@@ -5,8 +5,15 @@ locals {
   resourceGroupNames = [var.resource_group_name]
 }
 
+resource "null_resource" "print_resource_group" {
+  provisioner "local-exec" {
+    command = "echo 'Resource group: ${var.resource_group_name}'"
+  }
+}
+
 data ibm_resource_group resource_group {
   count = local.resourceGroupCount
+  depends_on = [null_resource.print_resource_group]
 
   name = local.resourceGroupNames[count.index]
 }
