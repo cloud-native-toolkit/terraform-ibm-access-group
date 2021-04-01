@@ -1,12 +1,12 @@
-output "resourceGroupNames" {
+output "resource_group_name" {
   description = "List of resource group names"
-  value       = var.resourceGroupNames
+  value       = local.resourceGroupNames[0]
   depends_on  = [data.ibm_resource_group.resource_group]
 }
 
-output "adminGroupNames" {
+output "admin_group_name" {
   description = "List of admin access group names"
-  value       = ibm_iam_access_group.admins.*.name
+  value       = ibm_iam_access_group.admins.[0].name
   depends_on  = [
     ibm_iam_access_group_policy.admin_policy_1,
     ibm_iam_access_group_policy.admin_policy_2,
@@ -15,20 +15,9 @@ output "adminGroupNames" {
   ]
 }
 
-output "userGroupNames" {
-  description = "List of editor access group names (**Deprecated** use editGroupNames instead"
-  value       = ibm_iam_access_group.editors.*.name
-  depends_on  = [
-    ibm_iam_access_group_policy.edit_policy_1,
-    ibm_iam_access_group_policy.edit_policy_2,
-    ibm_iam_access_group_policy.edit_policy_3,
-    ibm_iam_access_group_policy.edit_policy_4
-  ]
-}
-
-output "editGroupNames" {
+output "edit_group_name" {
   description = "List of editor access group names"
-  value       = ibm_iam_access_group.editors.*.name
+  value       = ibm_iam_access_group.editors.[0].name
   depends_on  = [
     ibm_iam_access_group_policy.edit_policy_1,
     ibm_iam_access_group_policy.edit_policy_2,
@@ -37,9 +26,9 @@ output "editGroupNames" {
   ]
 }
 
-output "viewGroupNames" {
+output "view_group_name" {
   description = "List of viewer access group names"
-  value       = ibm_iam_access_group.viewers.*.name
+  value       = ibm_iam_access_group.viewers.[0].name
   depends_on  = [
     ibm_iam_access_group_policy.view_policy_1,
     ibm_iam_access_group_policy.view_policy_2,

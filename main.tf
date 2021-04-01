@@ -1,39 +1,32 @@
 
+/*** Create Access Groups for Admins and Users ***/
 locals {
-  resourceGroupCount = length(var.resourceGroupNames)
+  resourceGroupCount = 1
+  resourceGroupNames = [var.resource_group_name]
 }
 
-resource "ibm_resource_group" "resource_group" {
-  count = var.createResourceGroups ? local.resourceGroupCount : 0
-
-  name  = var.resourceGroupNames[count.index]
-}
-
-data "ibm_resource_group" "resource_group" {
-  depends_on = [ibm_resource_group.resource_group]
+data ibm_resource_group resource_group {
   count = local.resourceGroupCount
 
-  name  = var.resourceGroupNames[count.index]
+  name = local.resourceGroupNames[count.index]
 }
-
-/*** Create Access Groups for Admins and Users ***/
 
 resource "ibm_iam_access_group" "admins" {
   count = local.resourceGroupCount
 
-  name  = "${replace(upper(var.resourceGroupNames[count.index]), "-", "_")}_ADMIN"
+  name  = "${replace(upper(local.resourceGroupNames[count.index]), "-", "_")}_ADMIN"
 }
 
 resource ibm_iam_access_group editors {
   count = local.resourceGroupCount
 
-  name  = "${replace(upper(var.resourceGroupNames[count.index]), "-", "_")}_EDIT"
+  name  = "${replace(upper(local.resourceGroupNames[count.index]), "-", "_")}_EDIT"
 }
 
 resource ibm_iam_access_group viewers {
   count = local.resourceGroupCount
 
-  name  = "${replace(upper(var.resourceGroupNames[count.index]), "-", "_")}_VIEW"
+  name  = "${replace(upper(local.resourceGroupNames[count.index]), "-", "_")}_VIEW"
 }
 
 /*** Import resource groups for the Admins Access Groups ***/
@@ -57,7 +50,7 @@ resource "ibm_iam_access_group_policy" "admin_policy_2" {
   roles           = ["Viewer"]
   resources {
     resource_group_id = element(data.ibm_resource_group.resource_group.*.id, count.index)
-    attributes        = { "resourceType" = "resource-group", "resource" = var.resourceGroupNames[count.index] }
+    attributes        = { "resourceType" = "resource-group", "resource" = local.resourceGroupNames[count.index] }
   }
 }
 
@@ -101,7 +94,7 @@ resource ibm_iam_access_group_policy edit_policy_2 {
   roles           = ["Viewer"]
   resources {
     resource_group_id = element(data.ibm_resource_group.resource_group.*.id, count.index)
-    attributes        = { "resourceType" = "resource-group", "resource" = var.resourceGroupNames[count.index] }
+    attributes        = { "resourceType" = "resource-group", "resource" = local.resourceGroupNames[count.index] }
   }
 }
 
@@ -148,7 +141,7 @@ resource ibm_iam_access_group_policy view_policy_2 {
   roles           = ["Viewer"]
   resources {
     resource_group_id = element(data.ibm_resource_group.resource_group.*.id, count.index)
-    attributes        = { "resourceType" = "resource-group", "resource" = var.resourceGroupNames[count.index] }
+    attributes        = { "resourceType" = "resource-group", "resource" = local.resourceGroupNames[count.index] }
   }
 }
 
