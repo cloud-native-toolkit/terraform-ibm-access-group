@@ -1,9 +1,5 @@
 
 /*** Create Access Groups for Admins and Users ***/
-locals {
-  resourceGroupCount = 1
-  resourceGroupNames = [var.resource_group_name]
-}
 
 resource "null_resource" "print_resource_group" {
   provisioner "local-exec" {
@@ -35,7 +31,7 @@ resource ibm_iam_access_group viewers {
 
 resource ibm_iam_access_group_policy admin_policy_1 {
 
-  access_group_id = element(ibm_iam_access_group.admins.id, count.index)
+  access_group_id = ibm_iam_access_group.admins.id
   roles           = ["Editor", "Manager"]
 
   resources {
@@ -45,7 +41,7 @@ resource ibm_iam_access_group_policy admin_policy_1 {
 
 resource ibm_iam_access_group_policy admin_policy_2 {
 
-  access_group_id = element(ibm_iam_access_group.admins.*.id, count.index)
+  access_group_id = ibm_iam_access_group.admins.id
   roles           = ["Viewer"]
 
   resources {
