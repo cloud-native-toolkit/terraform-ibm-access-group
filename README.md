@@ -14,7 +14,7 @@ The module depends on the following software components:
 
 ### Command-line tools
 
-- terraform - v12
+- terraform - v13
 
 ### Terraform providers
 
@@ -24,11 +24,9 @@ The module depends on the following software components:
 
 ```hcl-terraform
 module "access_groups" {
-  source = "github.com/ibm-garage-cloud/terraform-ibm-access-groups.git?ref=v1.0.0"
-
-  region               = var.region
-  resourceGroupNames   = split(",", var.resource_group)
-  createResourceGroups = true
+  source = "github.com/ibm-garage-cloud/terraform-ibm-access-group.git?ref=v1.0.0"
+  
+  resource_group_name  = module.resource_group.name
 }
 ```
 
