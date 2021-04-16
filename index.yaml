@@ -20,6 +20,29 @@ versions:
           output: name
         type: string
         description: The name of the resource group for which the access groups will be created
+    version: v2.1.1
+    outputs:
+      - name: resource_group_name
+        description: List of resource group names
+      - name: admin_group_name
+        description: List of admin access group names
+      - name: edit_group_name
+        description: List of editor access group names
+      - name: view_group_name
+        description: List of viewer access group names
+  - platforms: []
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
+            version: ">= 2.1.0"
+    variables:
+      - name: resource_group_name
+        moduleRef:
+          id: resource_group
+          output: name
+        type: string
+        description: The name of the resource group for which the access groups will be created
     version: v2.1.0
     outputs:
       - name: resource_group_name
