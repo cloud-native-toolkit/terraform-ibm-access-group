@@ -28,14 +28,20 @@ data ibm_resource_group resource_group {
 }
 
 resource ibm_iam_access_group admins {
+  count = var.provision ? 1 : 0
+
   name = local.admin_name
 }
 
 resource ibm_iam_access_group editors {
+  count = var.provision ? 1 : 0
+
   name = local.editor_name
 }
 
 resource ibm_iam_access_group viewers {
+  count = var.provision ? 1 : 0
+
   name = local.viewer_name
 }
 
@@ -44,8 +50,9 @@ resource ibm_iam_access_group viewers {
 /*** Admins Access Groups Policies ***/
 
 resource ibm_iam_access_group_policy admin_policy_1 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.admins.id
+  access_group_id = ibm_iam_access_group.admins[0].id
   roles           = ["Editor", "Manager"]
 
   resources {
@@ -54,8 +61,9 @@ resource ibm_iam_access_group_policy admin_policy_1 {
 }
 
 resource ibm_iam_access_group_policy admin_policy_2 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.admins.id
+  access_group_id = ibm_iam_access_group.admins[0].id
   roles           = ["Viewer"]
 
   resources {
@@ -65,8 +73,9 @@ resource ibm_iam_access_group_policy admin_policy_2 {
 }
 
 resource ibm_iam_access_group_policy admin_policy_3 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.admins.id
+  access_group_id = ibm_iam_access_group.admins[0].id
   roles           = ["Administrator", "Manager"]
 
   resources {
@@ -76,8 +85,9 @@ resource ibm_iam_access_group_policy admin_policy_3 {
 }
 
 resource ibm_iam_access_group_policy admin_policy_4 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.admins.id
+  access_group_id = ibm_iam_access_group.admins[0].id
   roles           = ["Administrator", "Manager"]
 
   resources {
@@ -88,8 +98,9 @@ resource ibm_iam_access_group_policy admin_policy_4 {
 /*** Editor Access Groups Policies ***/
 
 resource ibm_iam_access_group_policy edit_policy_1 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.editors.id
+  access_group_id = ibm_iam_access_group.editors[0].id
   roles           = ["Viewer", "Manager"]
 
   resources {
@@ -98,8 +109,9 @@ resource ibm_iam_access_group_policy edit_policy_1 {
 }
 
 resource ibm_iam_access_group_policy edit_policy_2 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.editors.id
+  access_group_id = ibm_iam_access_group.editors[0].id
   roles           = ["Viewer"]
 
   resources {
@@ -109,8 +121,9 @@ resource ibm_iam_access_group_policy edit_policy_2 {
 }
 
 resource ibm_iam_access_group_policy edit_policy_3 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.editors.id
+  access_group_id = ibm_iam_access_group.editors[0].id
   roles           = ["Editor", "Writer"]
 
   resources {
@@ -120,8 +133,9 @@ resource ibm_iam_access_group_policy edit_policy_3 {
 }
 
 resource ibm_iam_access_group_policy edit_policy_4 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.editors.id
+  access_group_id = ibm_iam_access_group.editors[0].id
   roles           = ["Reader", "Writer"]
 
   resources {
@@ -135,8 +149,9 @@ resource ibm_iam_access_group_policy edit_policy_4 {
 /*** Viewer Access Groups Policies ***/
 
 resource ibm_iam_access_group_policy view_policy_1 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.viewers.id
+  access_group_id = ibm_iam_access_group.viewers[0].id
   roles           = ["Viewer", "Reader"]
 
   resources {
@@ -145,8 +160,9 @@ resource ibm_iam_access_group_policy view_policy_1 {
 }
 
 resource ibm_iam_access_group_policy view_policy_2 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.viewers.id
+  access_group_id = ibm_iam_access_group.viewers[0].id
   roles           = ["Viewer"]
 
   resources {
@@ -156,8 +172,9 @@ resource ibm_iam_access_group_policy view_policy_2 {
 }
 
 resource ibm_iam_access_group_policy view_policy_3 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.viewers.id
+  access_group_id = ibm_iam_access_group.viewers[0].id
   roles           = ["Viewer", "Reader"]
 
   resources {
@@ -167,8 +184,9 @@ resource ibm_iam_access_group_policy view_policy_3 {
 }
 
 resource ibm_iam_access_group_policy view_policy_4 {
+  count = var.provision ? 1 : 0
 
-  access_group_id = ibm_iam_access_group.viewers.id
+  access_group_id = ibm_iam_access_group.viewers[0].id
   roles           = ["Viewer", "Reader"]
 
   resources {

@@ -5,9 +5,8 @@ variable "resource_group_name" {
   description = "Existing resource group where the IKS cluster will be provisioned."
 }
 
-variable "new_resource_group" {
-  type        = string
-  description = "Existing resource group where the IKS cluster will be provisioned."
+variable "resource_group_provision" {
+  type        = bool
 }
 
 variable "ibmcloud_api_key" {
