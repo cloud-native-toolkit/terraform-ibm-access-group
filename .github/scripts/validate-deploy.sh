@@ -4,7 +4,7 @@ set -e
 
 ibmcloud login --apikey "${IBMCLOUD_API_KEY}" -r us-east
 
-RESOURCE_GROUP=$(cat ./terraform.tfvars | grep "new_resource_group" | sed -E "s/.*=//g" | sed 's/"//g')
+RESOURCE_GROUP=$(cat ./terraform.tfvars | grep "resource_group_name" | sed -E "s/.*=//g" | sed 's/"//g')
 
 echo "Resource group: ${RESOURCE_GROUP}"
 

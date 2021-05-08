@@ -6,7 +6,7 @@ output "resource_group_name" {
 
 output "admin_group_name" {
   description = "List of admin access group names"
-  value       = ibm_iam_access_group.admins.name
+  value       = local.admin_name
   depends_on  = [
     ibm_iam_access_group_policy.admin_policy_1,
     ibm_iam_access_group_policy.admin_policy_2,
@@ -17,7 +17,7 @@ output "admin_group_name" {
 
 output "edit_group_name" {
   description = "List of editor access group names"
-  value       = ibm_iam_access_group.editors.name
+  value       = local.editor_name
   depends_on  = [
     ibm_iam_access_group_policy.edit_policy_1,
     ibm_iam_access_group_policy.edit_policy_2,
@@ -28,7 +28,7 @@ output "edit_group_name" {
 
 output "view_group_name" {
   description = "List of viewer access group names"
-  value       = ibm_iam_access_group.viewers.name
+  value       = local.viewer_name
   depends_on  = [
     ibm_iam_access_group_policy.view_policy_1,
     ibm_iam_access_group_policy.view_policy_2,
