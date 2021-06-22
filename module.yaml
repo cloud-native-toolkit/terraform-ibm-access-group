@@ -13,6 +13,8 @@ versions:
         - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
           version: ">= 2.3.0"
   variables:
+    - name: ibmcloud_api_key
+      scope: global
     - name: resource_group_name
       moduleRef:
         id: resource_group
