@@ -1,5 +1,6 @@
 id: github.com/cloud-native-toolkit/terraform-ibm-access-group
 name: ibm-access-group
+registryId: cloud-native-toolkit/access-group/ibm
 type: terraform
 description: Module to create ADMIN and USER access groups for a set of resource groups
 tags:
@@ -31,7 +32,7 @@ versions:
         description: Flag indicating that the service authorization should be created
         default: true
         optional: true
-    version: v3.0.1
+    version: v3.0.2
     outputs:
       - name: resource_group_name
         description: List of resource group names
