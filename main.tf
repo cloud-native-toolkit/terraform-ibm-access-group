@@ -26,6 +26,7 @@ resource null_resource create_access_groups {
     bin_dir        = module.clis.bin_dir
     description    = "${each.value} group for ${var.resource_group_name} [${random_uuid.tag.result}]"
     group          = upper("${var.resource_group_name}_${each.value}")
+    ibmcloud_api_key = var.ibmcloud_api_key
   }
 
   provisioner "local-exec" {
@@ -33,7 +34,7 @@ resource null_resource create_access_groups {
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
-      IBMCLOUD_API_KEY = var.ibmcloud_api_key
+      IBMCLOUD_API_KEY = self.triggers.ibmcloud_api_key
     }
   }
 
@@ -43,7 +44,7 @@ resource null_resource create_access_groups {
 
     environment = {
       BIN_DIR = self.triggers.bin_dir
-      IBMCLOUD_API_KEY = var.ibmcloud_api_key
+      IBMCLOUD_API_KEY = self.triggers.ibmcloud_api_key
     }
   }
 }
