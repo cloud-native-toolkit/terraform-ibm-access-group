@@ -21,7 +21,3 @@ versions:
       moduleRef:
         id: resource_group
         output: name
-    - name: provision
-      moduleRef:
-        id: resource_group
-        output: provision
