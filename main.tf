@@ -58,19 +58,19 @@ data ibm_resource_group resource_group {
 data ibm_iam_access_group admins {
   depends_on = [null_resource.create_access_groups]
 
-  access_group_name = upper("${var.resource_group_name}_${local.roles[0]}")
+  access_group_name = upper("${replace(var.resource_group_name, "-", "_")}_${local.roles[0]}")
 }
 
 data ibm_iam_access_group editors {
   depends_on = [null_resource.create_access_groups]
 
-  access_group_name = upper("${var.resource_group_name}_${local.roles[1]}")
+  access_group_name = upper("${replace(var.resource_group_name, "-", "_")}_${local.roles[1]}")
 }
 
 data ibm_iam_access_group viewers {
   depends_on = [null_resource.create_access_groups]
 
-  access_group_name = upper("${var.resource_group_name}_${local.roles[2]}")
+  access_group_name = upper("${replace(var.resource_group_name, "-", "_")}_${local.roles[2]}")
 }
 
 /*** Import resource groups for the Admins Access Groups ***/
