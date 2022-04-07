@@ -20,12 +20,12 @@ resource "random_uuid" "tag" {
 }
 
 resource null_resource create_access_groups {
-  for_each = local.roles
+  count = length(local.roles)
 
   triggers = {
     bin_dir        = module.clis.bin_dir
-    description    = "${each.value} group for ${var.resource_group_name} [${random_uuid.tag.result}]"
-    group          = upper("${var.resource_group_name}_${each.value}")
+    description    = "${local.roles[count.index]} group for ${var.resource_group_name} [${random_uuid.tag.result}]"
+    group          = upper("${var.resource_group_name}_${local.roles[count.index]}")
     ibmcloud_api_key = var.ibmcloud_api_key
   }
 
