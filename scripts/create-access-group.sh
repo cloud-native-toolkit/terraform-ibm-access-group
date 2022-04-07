@@ -36,7 +36,7 @@ echo "Creating access group ${ACCESS_GROUP}..."
 
 ACCOUNT_ID=$(curl -s -X GET 'https://iam.cloud.ibm.com/v1/apikeys/details' \
   -H "Authorization: Bearer $IAM_TOKEN" -H "IAM-Apikey: ${IBMCLOUD_API_KEY}" \
-  -H 'Content-Type: application/json' | ${JQ} -r '.account_id')
+  -H 'Content-Type: application/json' | jq -r '.account_id')
 
 PAYLOAD="{\"name\": \"${ACCESS_GROUP}\", \"description\": \"${DESCRIPTION}\"}"
 echo "${PAYLOAD}"
