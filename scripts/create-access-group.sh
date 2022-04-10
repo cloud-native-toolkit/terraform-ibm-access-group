@@ -23,14 +23,17 @@ IAM_TOKEN=$(curl -s -X POST "https://iam.cloud.ibm.com/identity/token" \
 
 # check if access group exists
 
-RESULT=$(curl -s -o /dev/null -w "%{http_code}" --url "https://iam.cloud.ibm.com/v2/groups/${ACCESS_GROUP}" \
+RESULT=$(curl -s -o /dev/null -w "%{http_code}" --url "https://iam.cloud.ibm.com/v2/groups/$ACCESS_GROUP" \
   --header "Authorization: Bearer $IAM_TOKEN" \
   --header 'Content-Type: application/json')
 
-if [[ "${RESULT}" == "200" ]]; then
-  echo "Access group ${ACCESS_GROUP} already exists"
-  exit 0
-fi
+#todo: this needs to be fixed
+#
+#
+#if [[ "${RESULT}" == "200" ]]; then
+#  echo "Access group ${ACCESS_GROUP} already exists"
+#  exit 0
+#fi
 
 echo "Creating access group ${ACCESS_GROUP}..."
 
@@ -38,17 +41,17 @@ ACCOUNT_ID=$(curl -s -X GET 'https://iam.cloud.ibm.com/v1/apikeys/details' \
   -H "Authorization: Bearer $IAM_TOKEN" -H "IAM-Apikey: ${IBMCLOUD_API_KEY}" \
   -H 'Content-Type: application/json' | jq -r '.account_id')
 
-PAYLOAD="{\"name\": \"${ACCESS_GROUP}\", \"description\": \"${DESCRIPTION}\"}"
-echo "${PAYLOAD}"
+PAYLOAD="{\"name\": \"${ACCESS_GROUP}\", \"description\": \"$DESCRIPTION\"}"
+echo "$PAYLOAD"
 
 # Submit request to IAM policy service
-RESULT=$(curl -s --request POST  --url "https://iam.cloud.ibm.com/v2/groups?account_id=${ACCOUNT_ID}"  \
+RESULT=$(curl -s --request POST  --url "https://iam.cloud.ibm.com/v2/groups?account_id=$ACCOUNT_ID"  \
   --header "Authorization: Bearer $IAM_TOKEN" \
   --header 'Content-Type: application/json' \
   --data "$PAYLOAD")
 
-echo "${RESULT}"
+echo "$RESULT"
 
-ACCESS_GROUP_ID=$(echo "${RESULT}" | jq '.id' -r)
+ACCESS_GROUP_ID=$(echo "$RESULT" | jq '.id' -r)
 
-echo "Access group created: ${ACCESS_GROUP_ID}"
+echo "Access group created: $ACCESS_GROUP_ID"

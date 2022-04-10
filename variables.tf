@@ -7,5 +7,4 @@ variable "resource_group_name" {
 variable "ibmcloud_api_key" {
   type        = string
   description = "The api key used to access IBM Cloud"
-  sensitive   = true
 }

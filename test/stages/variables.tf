@@ -5,10 +5,6 @@ variable "resource_group_name" {
   description = "Existing resource group where the IKS cluster will be provisioned."
 }
 
-variable "resource_group_provision" {
-  type        = bool
-}
-
 variable "ibmcloud_api_key" {
   type        = string
   description = "The api key for IBM Cloud access"

@@ -1,2 +1,9 @@
 .idea/
 *.iml
+
+.terraform
+.terraform.lock.hcl
+bin2
+test/stages/module
+*.tfstate
+*.tfstate.backup
