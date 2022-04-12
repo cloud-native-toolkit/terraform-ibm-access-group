@@ -62,6 +62,3 @@ echo "$RESULT"
 ACCESS_GROUP_ID=$(echo "$RESULT" | jq '.id' -r)
 
 echo "Access group created: $ACCESS_GROUP_ID"
-
-# sleep so we don't get concurrency error
-sleep 10s
