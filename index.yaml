@@ -11,19 +11,46 @@ versions:
   - platforms: []
     providers:
       - name: ibm
-        source: "ibm-cloud/ibm"
+        source: ibm-cloud/ibm
     dependencies:
       - id: resource_group
         refs:
           - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
-            version: ">= 2.3.0"
+            version: '>= 2.3.0'
+    variables:
+      - name: resource_group_name
+        type: string
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
+        moduleRef:
+          id: resource_group
+          output: name
+      - name: ibmcloud_api_key
+        type: string
+        description: The api key used to access IBM Cloud
+    version: v3.1.0
+    outputs:
+      - name: resource_group_name
+        description: List of resource group names
+  - platforms: []
+    providers:
+      - name: ibm
+        source: ibm-cloud/ibm
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
+            version: '>= 2.3.0'
     variables:
       - name: resource_group_name
         moduleRef:
           id: resource_group
           output: name
         type: string
-        description: The name of the resource group for which the access groups will be created
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
       - name: provision
         moduleRef:
           id: resource_group
@@ -45,19 +72,21 @@ versions:
   - platforms: []
     providers:
       - name: ibm
-        source: "ibm-cloud/ibm"
+        source: ibm-cloud/ibm
     dependencies:
       - id: resource_group
         refs:
           - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
-            version: ">= 2.3.0"
+            version: '>= 2.3.0'
     variables:
       - name: resource_group_name
         moduleRef:
           id: resource_group
           output: name
         type: string
-        description: The name of the resource group for which the access groups will be created
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
       - name: provision
         moduleRef:
           id: resource_group
@@ -81,7 +110,7 @@ versions:
       - id: resource_group
         refs:
           - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
-            version: ">= 2.3.0"
+            version: '>= 2.3.0'
     variables:
       - name: ibmcloud_api_key
         scope: global
@@ -92,7 +121,9 @@ versions:
           id: resource_group
           output: name
         type: string
-        description: The name of the resource group for which the access groups will be created
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
       - name: provision
         moduleRef:
           id: resource_group
@@ -116,14 +147,16 @@ versions:
       - id: resource_group
         refs:
           - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
-            version: ">= 2.3.0"
+            version: '>= 2.3.0'
     variables:
       - name: resource_group_name
         moduleRef:
           id: resource_group
           output: name
         type: string
-        description: The name of the resource group for which the access groups will be created
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
       - name: provision
         moduleRef:
           id: resource_group
@@ -147,14 +180,16 @@ versions:
       - id: resource_group
         refs:
           - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
-            version: ">= 2.1.0"
+            version: '>= 2.1.0'
     variables:
       - name: resource_group_name
         moduleRef:
           id: resource_group
           output: name
         type: string
-        description: The name of the resource group for which the access groups will be created
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
     version: v2.1.1
     outputs:
       - name: resource_group_name
@@ -170,14 +205,16 @@ versions:
       - id: resource_group
         refs:
           - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
-            version: ">= 2.1.0"
+            version: '>= 2.1.0'
     variables:
       - name: resource_group_name
         moduleRef:
           id: resource_group
           output: name
         type: string
-        description: The name of the resource group for which the access groups will be created
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
     version: v2.1.0
     outputs:
       - name: resource_group_name
@@ -208,7 +245,9 @@ versions:
       - name: adminGroupNames
         description: List of admin access group names
       - name: userGroupNames
-        description: List of editor access group names (**Deprecated** use editGroupNames instead
+        description: >-
+          List of editor access group names (**Deprecated** use editGroupNames
+          instead
       - name: editGroupNames
         description: List of editor access group names
       - name: viewGroupNames
@@ -233,14 +272,24 @@ versions:
       - name: adminGroupNames
         description: List of admin access group names
       - name: userGroupNames
-        description: List of editor access group names (**Deprecated** use editGroupNames instead
+        description: >-
+          List of editor access group names (**Deprecated** use editGroupNames
+          instead
       - name: editGroupNames
         description: List of editor access group names
       - name: viewGroupNames
         description: List of viewer access group names
   - platforms: []
     dependencies: []
-    variables: [{name: resourceGroupNames, type: list(string), description: List of resource group names that should be created}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, default: false, optional: true}]
+    variables:
+      - name: resourceGroupNames
+        type: list(string)
+        description: List of resource group names that should be created
+      - name: createResourceGroups
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        default: false
+        optional: true
     version: v1.2.0
     outputs:
       - name: resourceGroupNames
@@ -248,14 +297,27 @@ versions:
       - name: adminGroupNames
         description: List of admin access group names
       - name: userGroupNames
-        description: List of editor access group names (**Deprecated** use editGroupNames instead
+        description: >-
+          List of editor access group names (**Deprecated** use editGroupNames
+          instead
       - name: editGroupNames
         description: List of editor access group names
       - name: viewGroupNames
         description: List of viewer access group names
   - platforms: []
     dependencies: []
-    variables: [{name: resourceGroupNames, type: list(string), description: List of resource group names that should be created}, {name: region, type: string, description: The region where the container registry should be set up}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, default: false, optional: true}]
+    variables:
+      - name: resourceGroupNames
+        type: list(string)
+        description: List of resource group names that should be created
+      - name: region
+        type: string
+        description: The region where the container registry should be set up
+      - name: createResourceGroups
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        default: false
+        optional: true
     version: v1.1.2
     outputs:
       - name: resourceGroupNames
@@ -263,14 +325,27 @@ versions:
       - name: adminGroupNames
         description: List of admin access group names
       - name: userGroupNames
-        description: List of editor access group names (**Deprecated** use editGroupNames instead
+        description: >-
+          List of editor access group names (**Deprecated** use editGroupNames
+          instead
       - name: editGroupNames
         description: List of editor access group names
       - name: viewGroupNames
         description: List of viewer access group names
   - platforms: []
     dependencies: []
-    variables: [{name: resourceGroupNames, type: list(string), description: List of resource group names that should be created}, {name: region, type: string, description: The region where the container registry should be set up}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, default: false, optional: true}]
+    variables:
+      - name: resourceGroupNames
+        type: list(string)
+        description: List of resource group names that should be created
+      - name: region
+        type: string
+        description: The region where the container registry should be set up
+      - name: createResourceGroups
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        default: false
+        optional: true
     version: v1.1.1
     outputs:
       - name: resourceGroupNames
@@ -278,14 +353,27 @@ versions:
       - name: adminGroupNames
         description: List of admin access group names
       - name: userGroupNames
-        description: List of editor access group names (**Deprecated** use editGroupNames instead
+        description: >-
+          List of editor access group names (**Deprecated** use editGroupNames
+          instead
       - name: editGroupNames
         description: List of editor access group names
       - name: viewGroupNames
         description: List of viewer access group names
   - platforms: []
     dependencies: []
-    variables: [{name: resourceGroupNames, type: list(string), description: List of resource group names that should be created}, {name: region, type: string, description: The region where the container registry should be set up}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, default: false, optional: true}]
+    variables:
+      - name: resourceGroupNames
+        type: list(string)
+        description: List of resource group names that should be created
+      - name: region
+        type: string
+        description: The region where the container registry should be set up
+      - name: createResourceGroups
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        default: false
+        optional: true
     version: v1.1.0
     outputs:
       - name: resourceGroupNames
@@ -293,14 +381,26 @@ versions:
       - name: adminGroupNames
         description: List of admin access group names
       - name: userGroupNames
-        description: List of editor access group names (**Deprecated** use editGroupNames instead
+        description: >-
+          List of editor access group names (**Deprecated** use editGroupNames
+          instead
       - name: editGroupNames
         description: List of editor access group names
       - name: viewGroupNames
         description: List of viewer access group names
   - platforms: []
     dependencies: []
-    variables: [{name: resourceGroupNames, type: string, description: Comma-separated list of resource group names that should be created}, {name: region, type: string, description: The region where the container registry should be set up}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, optional: true}]
+    variables:
+      - name: resourceGroupNames
+        type: string
+        description: Comma-separated list of resource group names that should be created
+      - name: region
+        type: string
+        description: The region where the container registry should be set up
+      - name: createResourceGroups
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        optional: true
     version: v1.0.0
     outputs:
       - name: resourceGroupNames
@@ -314,21 +414,17 @@ versions:
       - ocp3
       - ocp4
     dependencies: []
-    #    - id: cluster
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-    #          version: ">= 1.7.0"
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-    #          version: ">= 2.0.0"
-    #    - id: namespace
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
-    #          version: ">= 2.1.0"
-    #    - id: dashboard
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-dashboard
-    #          version: ">= 1.6.0"
-    variables: [{name: resourceGroupNames, type: string, description: Comma-separated list of resource group names that should be created}, {name: region, type: string, description: The region where the container registry should be set up}, {name: createResourceGroups, type: bool, description: Flag indicating that the resource groups should be created, optional: true}]
+    variables:
+      - name: resourceGroupNames
+        type: string
+        description: Comma-separated list of resource group names that should be created
+      - name: region
+        type: string
+        description: The region where the container registry should be set up
+      - name: createResourceGroups
+        type: bool
+        description: Flag indicating that the resource groups should be created
+        optional: true
     version: v0.1.0
     outputs:
       - name: resourceGroupNames
@@ -342,21 +438,21 @@ versions:
       - ocp3
       - ocp4
     dependencies: []
-    #    - id: cluster
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-ibm-container-platform
-    #          version: ">= 1.7.0"
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-ocp-cluster
-    #          version: ">= 2.0.0"
-    #    - id: namespace
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-namespace
-    #          version: ">= 2.1.0"
-    #    - id: dashboard
-    #      refs:
-    #        - source: github.com/ibm-garage-cloud/terraform-k8s-dashboard
-    #          version: ">= 1.6.0"
-    variables: [{name: variable "my, type: variable "my, description: variable "my}, {name: 'variable" { #  type        = string #  description = "A description of my', type: string, description: 'variable" { #  type        = string #  description = "A description of my'}, {name: 'variable" #  default     = "" #}', type: 'variable" #  default     = "" #}', description: 'variable" #  default     = "" #}', optional: true}]
+    variables:
+      - name: variable "my
+        type: variable "my
+        description: variable "my
+      - name: >-
+          variable" { #  type        = string #  description = "A description of
+          my
+        type: string
+        description: >-
+          variable" { #  type        = string #  description = "A description of
+          my
+      - name: 'variable" #  default     = "" #}'
+        type: 'variable" #  default     = "" #}'
+        description: 'variable" #  default     = "" #}'
+        optional: true
     version: v0.0.0
     outputs:
       - name: output "my
