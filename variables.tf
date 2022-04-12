@@ -4,8 +4,7 @@ variable "resource_group_name" {
   description = "The name of the resource group for which the access groups will be created"
 }
 
-variable "provision" {
-  description = "Flag indicating that the service authorization should be created"
-  type        = bool
-  default     = true
+variable "ibmcloud_api_key" {
+  type        = string
+  description = "The api key used to access IBM Cloud"
 }
