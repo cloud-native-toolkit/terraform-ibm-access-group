@@ -21,3 +21,5 @@ versions:
       moduleRef:
         id: resource_group
         output: name
+    - name: ibmcloud_api_key
+      scope: global
