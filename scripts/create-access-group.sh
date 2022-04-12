@@ -21,25 +21,32 @@ IAM_TOKEN=$(curl -s -X POST "https://iam.cloud.ibm.com/identity/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=${IBMCLOUD_API_KEY}" | jq -r '.access_token')
 
-# check if access group exists
-
-RESULT=$(curl -s -o /dev/null -w "%{http_code}" --url "https://iam.cloud.ibm.com/v2/groups/$ACCESS_GROUP" \
-  --header "Authorization: Bearer $IAM_TOKEN" \
-  --header 'Content-Type: application/json')
-
-#todo: this needs to be fixed
-#
-#
-#if [[ "${RESULT}" == "200" ]]; then
-#  echo "Access group ${ACCESS_GROUP} already exists"
-#  exit 0
-#fi
-
-echo "Creating access group ${ACCESS_GROUP}..."
-
 ACCOUNT_ID=$(curl -s -X GET 'https://iam.cloud.ibm.com/v1/apikeys/details' \
   -H "Authorization: Bearer $IAM_TOKEN" -H "IAM-Apikey: ${IBMCLOUD_API_KEY}" \
   -H 'Content-Type: application/json' | jq -r '.account_id')
+
+# check if access group already exists
+
+ACCESS_GROUP_ID=""
+
+url="/v2/groups?account_id=$ACCOUNT_ID"
+while [ ! -z "$url" ] && [ -z "$ACCESS_GROUP_ID" ]
+do
+  #echo $url
+  RESULT=$(curl -s -X GET "https://iam.cloud.ibm.com$url" \
+    --header "Authorization: Bearer $IAM_TOKEN" \
+    --header 'Content-Type: application/json')
+
+  ACCESS_GROUP_ID="$(echo $RESULT | jq ".groups[] | select(.name==\"$ACCESS_GROUP\").id" -r)"
+  url=$(echo "$RESULT" | jq '.next_url // empty' -r )
+done
+
+if [ ! -z "$ACCESS_GROUP_ID" ]; then
+  echo "Access group ${ACCESS_GROUP} already exists"
+  exit 0
+fi
+
+echo "Creating access group ${ACCESS_GROUP}..."
 
 PAYLOAD="{\"name\": \"${ACCESS_GROUP}\", \"description\": \"$DESCRIPTION\"}"
 echo "$PAYLOAD"

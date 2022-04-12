@@ -29,6 +29,8 @@ POLICIES=$(curl -s -X GET "https://iam.cloud.ibm.com/v1/policies?account_id=$ACC
   -H "Authorization: Bearer $IAM_TOKEN" \
   -H "Content-Type: application/json")
 
+
+#echo "DESCRIPTION: $DESCRIPTION"
 POLICY=$(echo $POLICIES | jq ".policies[] | select(.description==\"$DESCRIPTION\")" -r)
 POLICY_ID=$(echo $POLICY | jq '.id' -r )
 

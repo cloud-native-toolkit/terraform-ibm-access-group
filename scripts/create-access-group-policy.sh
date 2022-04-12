@@ -23,7 +23,6 @@ ACCOUNT_ID=$(curl -s -X GET 'https://iam.cloud.ibm.com/v1/apikeys/details' \
   -H "Authorization: Bearer $IAM_TOKEN" -H "IAM-Apikey: ${IBMCLOUD_API_KEY}" \
   -H 'Content-Type: application/json' | jq -r '.account_id')
 
-
 #RESOURCE_ATTRIBUTES JSON payload based on syntax https://cloud.ibm.com/apidocs/iam-policy-management#create-policy
 
 ROLES_PAYLOAD=""
@@ -79,7 +78,7 @@ PAYLOAD='{
     ]
   }'
 
-#echo $PAYLOAD
+#echo "PAYLOAD: $PAYLOAD"
 
 # create access group policy
 RESULT=$(curl -s -X POST 'https://iam.cloud.ibm.com/v1/policies' \
@@ -90,7 +89,8 @@ RESULT=$(curl -s -X POST 'https://iam.cloud.ibm.com/v1/policies' \
 STATUS=$(echo $RESULT | jq '.status_code // empty' -r)
 echo $RESULT
 
-if [ ! -z "$STATUS" ]; then
+# ignore "409: (policy already exists)" error so it doesn't show as an error
+if [ ! -z "$STATUS" ] && [ "$STATUS" != "409" ]; then
   echo "exiting $STATUS"
   exit 1
 fi

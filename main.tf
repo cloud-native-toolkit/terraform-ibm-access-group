@@ -78,29 +78,15 @@ data ibm_iam_access_group viewers {
 
 /*** Admins Access Groups Policies ***/
 
-#resource ibm_iam_access_group_policy admin_policy_1 {
-#  access_group_id = data.ibm_iam_access_group.admins.id
-#  roles           = ["Editor", "Manager"]
-#
-#  resources {
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#  }
-#}
-
-
-resource "null_resource" "print_access_group_id" {
-  provisioner "local-exec" {
-    command = "echo 'Access group: ${data.ibm_iam_access_group.admins.access_group_name} ${data.ibm_iam_access_group.admins.groups.0.id}'"
-  }
-}
 resource null_resource admin_policy_1 {
 
   triggers = {
     bin_dir        = module.clis.bin_dir
     access_group_id = data.ibm_iam_access_group.admins.groups.0.id
-    description    = "admin_policy_1 group for ${data.ibm_iam_access_group.admins.id} [${random_uuid.tag.result}]"
+    description    = "admin_policy_1 group for [${random_uuid.tag.result}]"
     ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
     attributes = "{ \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\" }"
+    roles = "[\"Editor\", \"Manager\"]"
   }
 
   provisioner "local-exec" {
@@ -112,6 +98,7 @@ resource null_resource admin_policy_1 {
       ACCESS_GROUP_ID = self.triggers.access_group_id
       DESCRIPTION = self.triggers.description
       RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
     }
   }
 
@@ -124,7 +111,6 @@ resource null_resource admin_policy_1 {
       IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
       ACCESS_GROUP_ID = self.triggers.access_group_id
       DESCRIPTION = self.triggers.description
-      RESOURCE_ATTRIBUTES = self.triggers.attributes
     }
   }
 }
@@ -144,6 +130,50 @@ resource null_resource admin_policy_1 {
 #  }
 #}
 #
+
+
+resource null_resource admin_policy_2 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.admins.groups.0.id
+    description    = "admin_policy_2 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\":\"resourceType\", \"value\": \"resource-group\"}, {\"name\": \"resource\", \"value\": \"${var.resource_group_name}\" }"
+    roles = "[\"Viewer\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
+
+
+
+
 #resource ibm_iam_access_group_policy admin_policy_3 {
 #  access_group_id = data.ibm_iam_access_group.admins.id
 #  roles           = ["Administrator", "Manager"]
@@ -153,6 +183,47 @@ resource null_resource admin_policy_1 {
 #    resource_group_id = data.ibm_resource_group.resource_group.id
 #  }
 #}
+
+resource null_resource admin_policy_3 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.admins.groups.0.id
+    description    = "admin_policy_3 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\": \"serviceName\",  \"value\":\"containers-kubernetes\"}, { \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\"}"
+    roles = "[\"Administrator\", \"Manager\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
+
+
 #
 #resource ibm_iam_access_group_policy admin_policy_4 {
 #  access_group_id = data.ibm_iam_access_group.admins.id
@@ -162,6 +233,46 @@ resource null_resource admin_policy_1 {
 #    service = "container-registry"
 #  }
 #}
+
+resource null_resource admin_policy_4 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.admins.groups.0.id
+    description    = "admin_policy_4 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\": \"serviceName\", \"value\": \"container-registry\" }"
+    roles = "[\"Administrator\", \"Manager\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
+
 #
 #/*** Editor Access Groups Policies ***/
 #
@@ -173,6 +284,44 @@ resource null_resource admin_policy_1 {
 #    resource_group_id = data.ibm_resource_group.resource_group.id
 #  }
 #}
+
+resource null_resource edit_policy_1 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.editors.groups.0.id
+    description    = "edit_policy_1 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\" }"
+    roles = "[\"Viewer\", \"Manager\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
 #
 #resource ibm_iam_access_group_policy edit_policy_2 {
 #  access_group_id = data.ibm_iam_access_group.editors.id
@@ -183,6 +332,45 @@ resource null_resource admin_policy_1 {
 #    attributes        = { "resourceType" = "resource-group", "resource" = var.resource_group_name }
 #  }
 #}
+
+resource null_resource edit_policy_2 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.editors.groups.0.id
+    description    = "edit_policy_2 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\":\"resourceType\", \"value\": \"resource-group\"}, {\"name\": \"resource\", \"value\": \"${var.resource_group_name}\" }"
+    roles = "[\"Viewer\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
 #
 #resource ibm_iam_access_group_policy edit_policy_3 {
 #  access_group_id = data.ibm_iam_access_group.editors.id
@@ -194,6 +382,47 @@ resource null_resource admin_policy_1 {
 #  }
 #}
 #
+
+
+resource null_resource edit_policy_3 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.editors.groups.0.id
+    description    = "edit_policy_3 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\": \"serviceName\",  \"value\":\"containers-kubernetes\"}, { \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\"}"
+    roles = "[\"Editor\", \"Writer\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
+
 #resource ibm_iam_access_group_policy edit_policy_4 {
 #  access_group_id = data.ibm_iam_access_group.editors.id
 #  roles           = ["Reader", "Writer"]
@@ -204,6 +433,45 @@ resource null_resource admin_policy_1 {
 #    service           = "container-registry"
 #  }
 #}
+
+resource null_resource edit_policy_4 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.editors.groups.0.id
+    description    = "edit_policy_4 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\":\"resourceType\", \"value\": \"namespace\"}, { \"name\": \"serviceName\", \"value\": \"container-registry\" }, { \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\"}"
+    roles = "[\"Reader\", \"Writer\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
 #
 #
 #/*** Viewer Access Groups Policies ***/
@@ -217,6 +485,48 @@ resource null_resource admin_policy_1 {
 #  }
 #}
 #
+
+
+resource null_resource view_policy_1 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.viewers.groups.0.id
+    description    = "view_policy_1 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\" }"
+    roles = "[\"Viewer\", \"Reader\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
+
+
 #resource ibm_iam_access_group_policy view_policy_2 {
 #  access_group_id = data.ibm_iam_access_group.viewers.id
 #  roles           = ["Viewer"]
@@ -227,6 +537,45 @@ resource null_resource admin_policy_1 {
 #  }
 #}
 #
+
+resource null_resource view_policy_2 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.viewers.groups.0.id
+    description    = "view_policy_2 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\":\"resourceType\", \"value\": \"resource-group\"}, {\"name\": \"resource\", \"value\": \"${var.resource_group_name}\" }"
+    roles = "[\"Viewer\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
 #resource ibm_iam_access_group_policy view_policy_3 {
 #  access_group_id = data.ibm_iam_access_group.viewers.id
 #  roles           = ["Viewer", "Reader"]
@@ -237,6 +586,46 @@ resource null_resource admin_policy_1 {
 #  }
 #}
 #
+
+
+resource null_resource view_policy_3 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.viewers.groups.0.id
+    description    = "view_policy_3 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\": \"serviceName\",  \"value\":\"containers-kubernetes\"}, { \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\"}"
+    roles = "[\"Viewer\", \"Reader\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
+
+
 #resource ibm_iam_access_group_policy view_policy_4 {
 #  access_group_id = data.ibm_iam_access_group.viewers.id
 #  roles           = ["Viewer", "Reader"]
@@ -247,3 +636,41 @@ resource null_resource admin_policy_1 {
 #    service           = "container-registry"
 #  }
 #}
+
+
+resource null_resource view_policy_4 {
+
+  triggers = {
+    bin_dir        = module.clis.bin_dir
+    access_group_id = data.ibm_iam_access_group.viewers.groups.0.id
+    description    = "view_policy_4 group for [${random_uuid.tag.result}]"
+    ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    attributes = "{ \"name\":\"resourceType\", \"value\": \"namespace\"}, { \"name\": \"serviceName\", \"value\": \"container-registry\" }, { \"name\": \"resourceGroupId\", \"value\": \"${data.ibm_resource_group.resource_group.id}\"}"
+    roles = "[\"Viewer\", \"Reader\"]"
+  }
+
+  provisioner "local-exec" {
+    command = "${path.module}/scripts/create-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+      RESOURCE_ATTRIBUTES = self.triggers.attributes
+      ROLES = self.triggers.roles
+    }
+  }
+
+  provisioner "local-exec" {
+    when = destroy
+    command = "${path.module}/scripts/delete-access-group-policy.sh"
+
+    environment = {
+      BIN_DIR = self.triggers.bin_dir
+      IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      ACCESS_GROUP_ID = self.triggers.access_group_id
+      DESCRIPTION = self.triggers.description
+    }
+  }
+}
