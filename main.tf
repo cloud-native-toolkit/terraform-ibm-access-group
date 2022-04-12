@@ -115,23 +115,6 @@ resource null_resource admin_policy_1 {
   }
 }
 
-
-
-
-
-#
-#resource ibm_iam_access_group_policy admin_policy_2 {
-#  access_group_id = data.ibm_iam_access_group.admins.id
-#  roles           = ["Viewer"]
-#
-#  resources {
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#    attributes        = { "resourceType" = "resource-group", "resource" = var.resource_group_name }
-#  }
-#}
-#
-
-
 resource null_resource admin_policy_2 {
 
   triggers = {
@@ -169,21 +152,6 @@ resource null_resource admin_policy_2 {
   }
 }
 
-
-
-
-
-
-#resource ibm_iam_access_group_policy admin_policy_3 {
-#  access_group_id = data.ibm_iam_access_group.admins.id
-#  roles           = ["Administrator", "Manager"]
-#
-#  resources {
-#    service           = "containers-kubernetes"
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#  }
-#}
-
 resource null_resource admin_policy_3 {
 
   triggers = {
@@ -220,19 +188,6 @@ resource null_resource admin_policy_3 {
     }
   }
 }
-
-
-
-
-#
-#resource ibm_iam_access_group_policy admin_policy_4 {
-#  access_group_id = data.ibm_iam_access_group.admins.id
-#  roles           = ["Administrator", "Manager"]
-#
-#  resources {
-#    service = "container-registry"
-#  }
-#}
 
 resource null_resource admin_policy_4 {
 
@@ -276,14 +231,6 @@ resource null_resource admin_policy_4 {
 #
 #/*** Editor Access Groups Policies ***/
 #
-#resource ibm_iam_access_group_policy edit_policy_1 {
-#  access_group_id = data.ibm_iam_access_group.editors.id
-#  roles           = ["Viewer", "Manager"]
-#
-#  resources {
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#  }
-#}
 
 resource null_resource edit_policy_1 {
 
@@ -322,17 +269,6 @@ resource null_resource edit_policy_1 {
   }
 }
 
-#
-#resource ibm_iam_access_group_policy edit_policy_2 {
-#  access_group_id = data.ibm_iam_access_group.editors.id
-#  roles           = ["Viewer"]
-#
-#  resources {
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#    attributes        = { "resourceType" = "resource-group", "resource" = var.resource_group_name }
-#  }
-#}
-
 resource null_resource edit_policy_2 {
 
   triggers = {
@@ -370,20 +306,6 @@ resource null_resource edit_policy_2 {
   }
 }
 
-
-#
-#resource ibm_iam_access_group_policy edit_policy_3 {
-#  access_group_id = data.ibm_iam_access_group.editors.id
-#  roles           = ["Editor", "Writer"]
-#
-#  resources {
-#    service           = "containers-kubernetes"
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#  }
-#}
-#
-
-
 resource null_resource edit_policy_3 {
 
   triggers = {
@@ -420,19 +342,6 @@ resource null_resource edit_policy_3 {
     }
   }
 }
-
-
-
-#resource ibm_iam_access_group_policy edit_policy_4 {
-#  access_group_id = data.ibm_iam_access_group.editors.id
-#  roles           = ["Reader", "Writer"]
-#
-#  resources {
-#    resource_type     = "namespace"
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#    service           = "container-registry"
-#  }
-#}
 
 resource null_resource edit_policy_4 {
 
@@ -472,20 +381,10 @@ resource null_resource edit_policy_4 {
 }
 
 
-#
+
 #
 #/*** Viewer Access Groups Policies ***/
 #
-#resource ibm_iam_access_group_policy view_policy_1 {
-#  access_group_id = data.ibm_iam_access_group.viewers.id
-#  roles           = ["Viewer", "Reader"]
-#
-#  resources {
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#  }
-#}
-#
-
 
 resource null_resource view_policy_1 {
 
@@ -524,20 +423,6 @@ resource null_resource view_policy_1 {
   }
 }
 
-
-
-
-#resource ibm_iam_access_group_policy view_policy_2 {
-#  access_group_id = data.ibm_iam_access_group.viewers.id
-#  roles           = ["Viewer"]
-#
-#  resources {
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#    attributes        = { "resourceType" = "resource-group", "resource" = var.resource_group_name }
-#  }
-#}
-#
-
 resource null_resource view_policy_2 {
 
   triggers = {
@@ -575,19 +460,6 @@ resource null_resource view_policy_2 {
   }
 }
 
-
-#resource ibm_iam_access_group_policy view_policy_3 {
-#  access_group_id = data.ibm_iam_access_group.viewers.id
-#  roles           = ["Viewer", "Reader"]
-#
-#  resources {
-#    service           = "containers-kubernetes"
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#  }
-#}
-#
-
-
 resource null_resource view_policy_3 {
 
   triggers = {
@@ -624,19 +496,6 @@ resource null_resource view_policy_3 {
     }
   }
 }
-
-
-#resource ibm_iam_access_group_policy view_policy_4 {
-#  access_group_id = data.ibm_iam_access_group.viewers.id
-#  roles           = ["Viewer", "Reader"]
-#
-#  resources {
-#    resource_type     = "namespace"
-#    resource_group_id = data.ibm_resource_group.resource_group.id
-#    service           = "container-registry"
-#  }
-#}
-
 
 resource null_resource view_policy_4 {
 
