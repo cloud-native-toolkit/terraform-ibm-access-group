@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 
+BIN_DIR=$(cat .bin_dir)
+
+export PATH="${BIN_DIR}:${PATH}"
+
 set -e
 
 ibmcloud login --apikey "${IBMCLOUD_API_KEY}" -r us-east
 
-RESOURCE_GROUP=$(cat ./terraform.tfvars | grep "resource_group_name" | sed -E "s/.*=//g" | sed 's/"//g')
+RESOURCE_GROUP=$(cat .resource_group)
 
 echo "Resource group: ${RESOURCE_GROUP}"
 

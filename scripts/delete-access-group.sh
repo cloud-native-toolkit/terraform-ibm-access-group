@@ -29,15 +29,15 @@ ACCOUNT_ID=$(curl -s -X GET 'https://iam.cloud.ibm.com/v1/apikeys/details' \
 ACCESS_GROUP_ID=""
 
 url="/v2/groups?account_id=$ACCOUNT_ID"
-while [ ! -z "$url" ] && [ -z "$ACCESS_GROUP_ID" ]
+while [[ -n "$url" ]] && [[ -z "$ACCESS_GROUP_ID" ]]
 do
   #echo $url
   RESULT=$(curl -s -X GET "https://iam.cloud.ibm.com$url" \
     --header "Authorization: Bearer $IAM_TOKEN" \
     --header 'Content-Type: application/json')
 
-  ACCESS_GROUP_ID="$(echo $RESULT | jq ".groups[] | select(.name==\"$ACCESS_GROUP\").id" -r)"
-  url=$(echo "$RESULT" | jq '.next_url // empty' -r )
+  ACCESS_GROUP_ID="$(echo "${RESULT}" | jq -r --arg ACCESS_GROUP "${ACCESS_GROUP}" '.groups[] | select(.name == $ACCESS_GROUP).id')"
+  url=$(echo "${RESULT}" | jq '.next_url // empty' -r )
 done
 
 echo "DELETING ACCESS_GROUP_ID: $ACCESS_GROUP_ID"

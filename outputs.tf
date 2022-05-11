@@ -1,5 +1,5 @@
 output "resource_group_name" {
-  description = "List of resource group names"
+  description = "The resource group name"
   value       = var.resource_group_name
   depends_on  = [data.ibm_resource_group.resource_group]
 }
