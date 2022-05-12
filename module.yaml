@@ -23,3 +23,5 @@ versions:
         output: name
     - name: ibmcloud_api_key
       scope: global
+    - name: page_limit
+      scope: ignore

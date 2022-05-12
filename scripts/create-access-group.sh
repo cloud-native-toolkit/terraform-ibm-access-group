@@ -17,6 +17,10 @@ if [[ -z "${IBMCLOUD_API_KEY}" ]]; then
   exit 1
 fi
 
+if [[ -z "${PAGE_LIMIT}" ]]; then
+  PAGE_LIMIT="50"
+fi
+
 IAM_TOKEN=$(curl -s -X POST "https://iam.cloud.ibm.com/identity/token" \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "grant_type=urn:ibm:params:oauth:grant-type:apikey&apikey=${IBMCLOUD_API_KEY}" | jq -r '.access_token')
@@ -29,16 +33,16 @@ ACCOUNT_ID=$(curl -s -X GET 'https://iam.cloud.ibm.com/v1/apikeys/details' \
 
 ACCESS_GROUP_ID=""
 
-url="/v2/groups?account_id=$ACCOUNT_ID"
+url="https://iam.cloud.ibm.com/v2/groups?limit=${PAGE_LIMIT}&account_id=$ACCOUNT_ID"
 while [[ -n "$url" ]] && [[ -z "$ACCESS_GROUP_ID" ]]
 do
   #echo $url
-  RESULT=$(curl -s -X GET "https://iam.cloud.ibm.com$url" \
+  RESULT=$(curl -s -X GET "$url" \
     --header "Authorization: Bearer $IAM_TOKEN" \
     --header 'Content-Type: application/json')
 
   ACCESS_GROUP_ID="$(echo "${RESULT}" | jq -r --arg ACCESS_GROUP "${ACCESS_GROUP}" '.groups[] | select(.name == $ACCESS_GROUP).id')"
-  url=$(echo "$RESULT" | jq '.next_url // empty' -r )
+  url=$(echo "$RESULT" | jq '.next.href // empty' -r )
 done
 
 if [[ -n "$ACCESS_GROUP_ID" ]]; then

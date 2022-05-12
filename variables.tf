@@ -8,3 +8,9 @@ variable "ibmcloud_api_key" {
   type        = string
   description = "The api key used to access IBM Cloud"
 }
+
+variable "page_limit" {
+  type = number
+  description = "The number of access groups to return per request (this is mostly used for testing)"
+  default = 50
+}

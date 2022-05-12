@@ -28,6 +28,7 @@ resource null_resource create_access_groups {
     description    = "${local.roles[count.index]} group for ${var.resource_group_name} [${random_uuid.tag.result}]"
     group          = upper("${replace(var.resource_group_name, "-", "_")}_${local.roles[count.index]}")
     ibmcloud_api_key = base64encode(var.ibmcloud_api_key)
+    page_limit     = var.page_limit
   }
 
   provisioner "local-exec" {
@@ -36,6 +37,7 @@ resource null_resource create_access_groups {
     environment = {
       BIN_DIR = self.triggers.bin_dir
       IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      PAGE_LIMIT = self.triggers.page_limit
     }
   }
 
@@ -46,6 +48,7 @@ resource null_resource create_access_groups {
     environment = {
       BIN_DIR = self.triggers.bin_dir
       IBMCLOUD_API_KEY = base64decode(self.triggers.ibmcloud_api_key)
+      PAGE_LIMIT = self.triggers.page_limit
     }
   }
 }
