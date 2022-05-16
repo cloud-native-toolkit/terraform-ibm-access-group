@@ -41,8 +41,17 @@ do
     --header "Authorization: Bearer $IAM_TOKEN" \
     --header 'Content-Type: application/json')
 
-  ACCESS_GROUP_ID="$(echo "${RESULT}" | jq -r --arg ACCESS_GROUP "${ACCESS_GROUP}" '.groups[] | select(.name == $ACCESS_GROUP).id')"
-  url=$(echo "$RESULT" | jq '.next.href // empty' -r )
+  if [[ $(echo "${RESULT}" | jq '.groups | length') -eq 0 ]]; then
+    echo "Error retrieving existing groups. Retrying..."
+    echo "${RESULT}" | jq -c '.'
+
+    RESULT=$(curl -s -X GET "$url" \
+      --header "Authorization: Bearer $IAM_TOKEN" \
+      --header 'Content-Type: application/json')
+  fi
+
+  ACCESS_GROUP_ID="$(echo "${RESULT}" | jq -r --arg ACCESS_GROUP "${ACCESS_GROUP}" '.groups[]? | select(.name == $ACCESS_GROUP) | .id')"
+  url=$(echo "${RESULT}" | jq '.next.href // empty' -r )
 done
 
 if [[ -n "$ACCESS_GROUP_ID" ]]; then
