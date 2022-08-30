@@ -1,4 +1,4 @@
-id: github.com/cloud-native-toolkit/terraform-ibm-access-group
+id: github.com/terraform-ibm-modules/terraform-ibm-toolkit-access-group
 name: ibm-access-group
 registryId: cloud-native-toolkit/access-group/ibm
 type: terraform
@@ -8,6 +8,45 @@ tags:
   - ibm cloud
   - access groups
 versions:
+  - platforms: []
+    providers:
+      - name: ibm
+        source: ibm-cloud/ibm
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-ibm-resource-group
+            version: '>= 2.3.0'
+    variables:
+      - name: resource_group_name
+        type: string
+        description: >-
+          The name of the resource group for which the access groups will be
+          created
+        moduleRef:
+          id: resource_group
+          output: name
+      - name: ibmcloud_api_key
+        type: string
+        description: The api key used to access IBM Cloud
+        scope: global
+      - name: page_limit
+        type: number
+        description: >-
+          The number of access groups to return per request (this is mostly used
+          for testing)
+        default: '50'
+        scope: ignore
+    version: v3.1.7
+    outputs:
+      - name: resource_group_name
+        description: The resource group name
+      - name: admin_group_name
+        description: List of admin access group names
+      - name: edit_group_name
+        description: List of editor access group names
+      - name: view_group_name
+        description: List of viewer access group names
   - platforms: []
     providers:
       - name: ibm
