@@ -1,5 +1,5 @@
 name: ibm-access-group
-registryId: cloud-native-toolkit/access-group/ibm
+#registryId: cloud-native-toolkit/access-group/ibm
 type: terraform
 description: Module to create ADMIN and USER access groups for a set of resource groups
 tags:
